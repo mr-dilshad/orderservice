@@ -16,12 +16,12 @@ import lombok.Getter;
 public class OrderItemDto {
     @JsonProperty("item_id")
     private Long itemId;
-    private Long quantity;
+    private int quantity;
 
     public OrderItemDto() {
     }
 
-    public OrderItemDto(Long quantity, Long itemId) {
+    public OrderItemDto(Long itemId, int quantity) {
         this.quantity = quantity;
         this.itemId = itemId;
     }

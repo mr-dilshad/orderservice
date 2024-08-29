@@ -49,17 +49,16 @@ public class OrderService {
             BigDecimal totalAmount = getTotalAmount(orderItemsDto);
 
             // Mapping orderItemDtos to OrderItems entity
-//            List<OrderItem> orderItems = orderItemsDto.stream().map(orderItemMapper::dtoToModel).toList();
+            List<OrderItem> orderItems = orderItemsDto.stream().map(item -> OrderItem.builder().item(itemService.getItemById(item.getItemId())).quantity(item.getQuantity()).build()).toList();
 
             // Create an order
-            order = Order
-                    .builder()
-                            .orderDate(LocalDateTime.now())
-                                    .customer(customer)
-                                            .orderItems(orderItems)
-                                                    .status(OrderStatus.NEW)
-                                                            .totalAmount(totalAmount)
-                                                                    .build();
+            order = new Order();
+            order.setOrderDate(LocalDateTime.now());
+            order.setCustomer(customer);
+            order.setOrderItems(orderItems);
+            order.setStatus(OrderStatus.NEW);
+            order.setTotalAmount(totalAmount);
+
         }catch (EntityNotFoundException exception){
             LOGGER.error("Exception occured while creating the order: {}", exception.getMessage());
             throw new OrderCannotBeCreatedException("Some error occured while creating the order");

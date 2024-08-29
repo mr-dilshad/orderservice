@@ -1,5 +1,7 @@
 package com.restaurant.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -38,12 +40,5 @@ public class OrderItem {
         this.item = item;
         this.quantity = quantity;
         this.order = order;
-    }
-
-    public OrderItem(com.restaurant.orderservice.model.OrderItemDto orderItemDto){
-        return OrderItem.builder()
-                .item()
-                .quantity()
-                .
     }
 }

@@ -25,7 +25,7 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public BigDecimal priceForGivenQuantiy(Long itemId, Long quantity){
+    public BigDecimal priceForGivenQuantiy(Long itemId, int quantity){
         Item item = itemRepository.getReferenceById(itemId);
         return item.getPrice().multiply(BigDecimal.valueOf(quantity));
     }

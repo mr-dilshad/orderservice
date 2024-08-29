@@ -1,16 +1,19 @@
 package com.restaurant.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 @Data
+@ToString
 public class Order {
 
     @Id
@@ -22,10 +25,12 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
+    @JsonIgnore
+    private List<OrderItem> orderItems=new ArrayList<>();
 
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
@@ -35,10 +40,13 @@ public class Order {
     private OrderStatus status;
 
     // Constructors, Getters, and Setters
+    public void setOrderItems(List<OrderItem> orderItems){
+            this.orderItems.addAll(orderItems);
+            orderItems.forEach(orderItem -> orderItem.setOrder(this));
+    }
 
     public Order() {}
 
-    @Builder
     public Order(LocalDateTime orderDate, BigDecimal totalAmount, OrderStatus status, Customer customer, List<OrderItem> orderItems) {
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
